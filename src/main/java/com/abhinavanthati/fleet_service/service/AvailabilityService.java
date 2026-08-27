@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import com.abhinavanthati.fleet_service.dto.BusyWindow;
 import com.abhinavanthati.fleet_service.entity.MaintenanceWindow;
 import com.abhinavanthati.fleet_service.entity.Reservation;
 import com.abhinavanthati.fleet_service.enums.ReservationStatus;
@@ -11,6 +12,7 @@ import com.abhinavanthati.fleet_service.repository.MaintenanceWindowRepository;
 import com.abhinavanthati.fleet_service.repository.ReservationRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,5 +55,29 @@ public class AvailabilityService {
         }
 
         return true;
+    }
+
+    /**
+     * Retrieves all busy windows (reservations and maintenance) for a given vehicle.
+     *
+     * @param vehicleId The ID of the vehicle.
+     * @return A list of busy windows for the vehicle.
+     */
+    @PreAuthorize("hasAnyRole('DRIVER', 'MANAGER', 'ADMIN')")
+    public List<BusyWindow> getBusyWindowsForVehicle(Long vehicleId) {
+        List<BusyWindow> busy = new ArrayList<>();
+
+        for (Reservation r : reservationRepository.findByVehicleId(vehicleId)) {
+            if (r.getStatus() == ReservationStatus.CANCELLED || r.getStatus() == ReservationStatus.DENIED) {
+                continue;
+            }
+            busy.add(new BusyWindow(r.getStartTime(), r.getEndTime()));
+        }
+
+        for (MaintenanceWindow w : maintenanceWindowRepository.findByVehicleId(vehicleId)) {
+            busy.add(new BusyWindow(w.getStartTime(), w.getEndTime()));
+        }
+
+        return busy;
     }
 }

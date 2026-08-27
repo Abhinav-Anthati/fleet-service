@@ -3,6 +3,7 @@ package com.abhinavanthati.fleet_service.entity;
 import java.time.LocalDateTime;
 
 import com.abhinavanthati.fleet_service.enums.ReservationStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,6 +25,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
+    @JsonBackReference
     private Vehicle vehicle;
 
     @ManyToOne

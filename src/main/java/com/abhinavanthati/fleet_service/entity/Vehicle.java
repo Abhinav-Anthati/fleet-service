@@ -3,6 +3,7 @@ package com.abhinavanthati.fleet_service.entity;
 import java.util.List;
 
 import com.abhinavanthati.fleet_service.enums.VehicleStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,9 +31,11 @@ public class Vehicle {
     private VehicleStatus status;
 
     @OneToMany(mappedBy = "vehicle")
+    @JsonManagedReference
     private List<Reservation> reservations;
 
     @OneToMany(mappedBy = "vehicle")
+    @JsonManagedReference
     private List<MaintenanceWindow> maintenanceWindows;
 
     public Vehicle() {}

@@ -55,9 +55,16 @@ public class ReservationService {
      * @throws IllegalStateException if the reservation is not found.
      */
     @PreAuthorize("hasAnyRole('DRIVER', 'MANAGER', 'ADMIN')")
-    public Reservation getReservationById(Long id) {
-        return reservationRepository.findById(id)
+    public Reservation getReservationById(Long id, boolean requestingUserEmail, boolean isManagerOrAdmin) {
+        Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Reservation not found"));
+
+        boolean isOwner = reservation.getRequester().getEmail().equals(requestingUserEmail);
+        if (!isOwner && !isManagerOrAdmin) {
+            throw new AccessDeniedException("Not your reservation");
+        }
+
+        return reservation;
     }
 
     /**
@@ -84,7 +91,6 @@ public class ReservationService {
     @PreAuthorize("hasAnyRole('DRIVER', 'MANAGER', 'ADMIN')")
     public Reservation updateReservationDetails(
             Long id, Reservation updatedDetails, User newRequester, String requestingUserEmail, boolean isManagerOrAdmin) {
-
         Reservation existing = reservationRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Reservation not found"));
 

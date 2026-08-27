@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.abhinavanthati.fleet_service.dto.BusyWindow;
 import com.abhinavanthati.fleet_service.entity.Vehicle;
+import com.abhinavanthati.fleet_service.service.AvailabilityService;
 import com.abhinavanthati.fleet_service.service.VehicleService;
 
 @RestController
@@ -21,6 +23,9 @@ public class VehicleController {
     
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private AvailabilityService availabilityService;
 
     @PostMapping
     public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
@@ -45,6 +50,11 @@ public class VehicleController {
     @PutMapping("/{id}")
     public Vehicle updateVehicle(@PathVariable Long id, @RequestBody Vehicle updatedVehicle) {
         return vehicleService.updateVehicle(id, updatedVehicle);
+    }
+
+    @GetMapping("/vehicles/{vehicleId}/availability")
+    public List<BusyWindow> getVehicleAvailability(@PathVariable Long vehicleId) {
+        return availabilityService.getBusyWindowsForVehicle(vehicleId);
     }
 
 }
