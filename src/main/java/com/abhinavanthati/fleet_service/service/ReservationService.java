@@ -55,7 +55,7 @@ public class ReservationService {
      * @throws IllegalStateException if the reservation is not found.
      */
     @PreAuthorize("hasAnyRole('DRIVER', 'MANAGER', 'ADMIN')")
-    public Reservation getReservationById(Long id, boolean requestingUserEmail, boolean isManagerOrAdmin) {
+    public Reservation getReservationById(Long id, String requestingUserEmail, boolean isManagerOrAdmin) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Reservation not found"));
 

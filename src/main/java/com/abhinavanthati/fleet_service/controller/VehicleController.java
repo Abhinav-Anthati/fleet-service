@@ -52,9 +52,9 @@ public class VehicleController {
         return vehicleService.updateVehicle(id, updatedVehicle);
     }
 
-    @GetMapping("/vehicles/{vehicleId}/availability")
-    public List<BusyWindow> getVehicleAvailability(@PathVariable Long vehicleId) {
-        return availabilityService.getBusyWindowsForVehicle(vehicleId);
+    @GetMapping("/{id}/availability")
+    public List<BusyWindow> getVehicleAvailability(@PathVariable Long id) {
+        return availabilityService.getBusyWindowsForVehicle(id);
     }
 
 }

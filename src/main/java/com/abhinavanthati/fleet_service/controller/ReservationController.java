@@ -42,8 +42,8 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public Reservation getReservationById(@PathVariable Long id) {
-        return reservationService.getReservationById(id);
+    public Reservation getReservationById(@PathVariable Long id, Authentication auth) {
+        return reservationService.getReservationById(id, auth.getName(), hasManagerAuthority(auth));
     }
 
     @GetMapping
