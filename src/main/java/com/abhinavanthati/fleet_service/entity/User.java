@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.abhinavanthati.fleet_service.enums.UserRoles;
+import com.abhinavanthati.fleet_service.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -33,7 +33,7 @@ public class User implements UserDetails{
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRoles role;
+    private UserRole role;
 
     public User() {}
 
@@ -63,6 +63,6 @@ public class User implements UserDetails{
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public UserRoles getRole() { return role; }
-    public void setRole(UserRoles role) { this.role = role; }
+    public UserRole getRole() { return role; }
+    public void setRole(UserRole role) { this.role = role; }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abhinavanthati.fleet_service.entity.User;
-import com.abhinavanthati.fleet_service.enums.UserRoles;
+import com.abhinavanthati.fleet_service.enums.UserRole;
 import com.abhinavanthati.fleet_service.service.UserService;
 
 @RestController
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/role")
-    public User updateUserRole(@PathVariable Long id, @RequestBody UserRoles newRole) {
+    public User updateUserRole(@PathVariable Long id, @RequestBody UserRole newRole) {
         return userService.updateUserRole(id, newRole);
     }
 

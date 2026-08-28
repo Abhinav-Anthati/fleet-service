@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.abhinavanthati.fleet_service.entity.User;
-import com.abhinavanthati.fleet_service.enums.UserRoles;
+import com.abhinavanthati.fleet_service.enums.UserRole;
 import com.abhinavanthati.fleet_service.repository.UserRepository;
 
 /**
@@ -93,7 +93,7 @@ public class UserService {
      * @throws IllegalStateException if the user is not found.
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public User updateUserRole(Long id, UserRoles newRole) {
+    public User updateUserRole(Long id, UserRole newRole) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("User not found"));
 
