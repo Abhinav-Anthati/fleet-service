@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.abhinavanthati.fleet_service.enums.ReservationStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "reservations")
@@ -23,17 +25,21 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
-    @JsonBackReference
     private Vehicle vehicle;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User requester;
 
+    @NotNull
     private LocalDateTime startTime;
+
+    @NotNull
     private LocalDateTime endTime;
+    
     private String description;
 
     @Enumerated(EnumType.STRING)

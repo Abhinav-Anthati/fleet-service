@@ -3,6 +3,7 @@ package com.abhinavanthati.fleet_service.entity;
 import java.util.List;
 
 import com.abhinavanthati.fleet_service.enums.VehicleStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -22,20 +25,27 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String make;
+
+    @NotBlank
     private String model;
+
+    @NotNull
     private int year;
+    
+    @NotBlank
     private String licensePlate;
 
     @Enumerated(EnumType.STRING)
     private VehicleStatus status;
 
     @OneToMany(mappedBy = "vehicle")
-    @JsonManagedReference
+    @JsonIgnoreProperties("vehicle")
     private List<Reservation> reservations;
 
     @OneToMany(mappedBy = "vehicle")
-    @JsonManagedReference
+    @JsonIgnoreProperties("vehicle")
     private List<MaintenanceWindow> maintenanceWindows;
 
     public Vehicle() {}

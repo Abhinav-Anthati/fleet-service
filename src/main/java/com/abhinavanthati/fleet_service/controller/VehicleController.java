@@ -17,6 +17,8 @@ import com.abhinavanthati.fleet_service.entity.Vehicle;
 import com.abhinavanthati.fleet_service.service.AvailabilityService;
 import com.abhinavanthati.fleet_service.service.VehicleService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
@@ -28,7 +30,7 @@ public class VehicleController {
     private AvailabilityService availabilityService;
 
     @PostMapping
-    public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
+    public Vehicle createVehicle(@Valid @RequestBody Vehicle vehicle) {
         return vehicleService.createVehicle(vehicle);
     }
 
@@ -48,7 +50,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}")
-    public Vehicle updateVehicle(@PathVariable Long id, @RequestBody Vehicle updatedVehicle) {
+    public Vehicle updateVehicle(@PathVariable Long id, @Valid @RequestBody Vehicle updatedVehicle) {
         return vehicleService.updateVehicle(id, updatedVehicle);
     }
 

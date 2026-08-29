@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.abhinavanthati.fleet_service.entity.MaintenanceWindow;
 import com.abhinavanthati.fleet_service.service.MaintenanceWindowService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/maintenance-windows")
 public class MaintenanceWindowController {
@@ -21,7 +23,7 @@ public class MaintenanceWindowController {
     private MaintenanceWindowService maintenanceWindowService;
 
     @PostMapping
-    public MaintenanceWindow createMaintenanceWindow(@RequestBody MaintenanceWindow maintenanceWindow) {
+    public MaintenanceWindow createMaintenanceWindow(@Valid @RequestBody MaintenanceWindow maintenanceWindow) {
         return maintenanceWindowService.createMaintenanceWindow(maintenanceWindow);
     }
 
@@ -41,7 +43,7 @@ public class MaintenanceWindowController {
     }
 
     @PostMapping("/{id}")
-    public MaintenanceWindow updateMaintenanceWindow(@PathVariable Long id, @RequestBody MaintenanceWindow updatedWindow) {
+    public MaintenanceWindow updateMaintenanceWindow(@PathVariable Long id, @Valid @RequestBody MaintenanceWindow updatedWindow) {
         return maintenanceWindowService.updateMaintenanceWindow(id, updatedWindow);
     }
 }

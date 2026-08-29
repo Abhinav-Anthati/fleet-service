@@ -3,7 +3,6 @@ package com.abhinavanthati.fleet_service.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,8 @@ import com.abhinavanthati.fleet_service.entity.User;
 import com.abhinavanthati.fleet_service.enums.UserRole;
 import com.abhinavanthati.fleet_service.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -26,7 +27,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser, Authentication auth) {
+    public User updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser, Authentication auth) {
         return userService.updateUser(id, updatedUser, auth.getName(), hasAdminAuthority(auth));
     }
 
@@ -53,6 +54,16 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+    }
+
+    @GetMapping("/me")
+    public User getCurrentUser(Authentication auth) {
+        return userService.getCurrentUser(auth.getName());
+    }
+
+    @GetMapping("/drivers")
+    public List<User> getAllDrivers() {
+        return userService.getAllDrivers();
     }
 
     private boolean hasAdminAuthority(Authentication auth) {

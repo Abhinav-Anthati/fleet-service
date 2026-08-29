@@ -160,4 +160,15 @@ public class ReservationService {
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
     }
+
+    /**
+     * Retrieves all reservations made by a specific user.
+     * 
+     * @param email The email of the user whose reservations are to be retrieved.
+     * @return A list of reservations made by the specified user.
+     */
+    @PreAuthorize("hasAnyRole('DRIVER', 'MANAGER', 'ADMIN')")
+    public List<Reservation> getReservationsByRequesterEmail(String email) {
+        return reservationRepository.findByRequesterEmail(email);
+    }
 }

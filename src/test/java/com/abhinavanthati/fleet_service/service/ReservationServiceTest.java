@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for ReservationService.
  */
 @SpringBootTest
+@Transactional
 public class ReservationServiceTest {
 
     @Autowired
@@ -53,6 +55,8 @@ public class ReservationServiceTest {
         vehicle = new Vehicle();
         vehicle.setMake("Ford");
         vehicle.setModel("Transit");
+        vehicle.setYear(2023);
+        vehicle.setLicensePlate("TEST-0001");
         vehicle.setStatus(VehicleStatus.AVAILABLE);
         vehicle = vehicleRepository.save(vehicle);
 

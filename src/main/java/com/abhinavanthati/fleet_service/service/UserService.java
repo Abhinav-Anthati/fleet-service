@@ -130,4 +130,15 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    @PreAuthorize("hasAnyRole('DRIVER', 'MANAGER', 'ADMIN')")
+    public User getCurrentUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    public List<User> getAllDrivers() {
+        return userRepository.findByRole(UserRole.DRIVER);
+    }
 }

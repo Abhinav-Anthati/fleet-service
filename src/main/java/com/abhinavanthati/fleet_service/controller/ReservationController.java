@@ -19,6 +19,8 @@ import com.abhinavanthati.fleet_service.enums.ReservationStatus;
 import com.abhinavanthati.fleet_service.repository.UserRepository;
 import com.abhinavanthati.fleet_service.service.ReservationService;
 
+import jakarta.validation.Valid;
+
 /**
  * REST controller for managing reservations.
  */
@@ -33,7 +35,7 @@ public class ReservationController {
     private UserRepository userRepository;
 
     @PostMapping
-    public Reservation createReservation(@RequestBody Reservation reservation, Authentication auth) {
+    public Reservation createReservation(@Valid @RequestBody Reservation reservation, Authentication auth) {
         User currentUser = userRepository.findByEmail(auth.getName())
                 .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
         boolean isManagerOrAdmin = hasManagerAuthority(auth);
@@ -53,7 +55,7 @@ public class ReservationController {
 
     @PutMapping("/{id}")
     public Reservation updateReservationDetails(
-            @PathVariable Long id, @RequestBody Reservation updatedDetails, Authentication auth) {
+            @PathVariable Long id, @Valid @RequestBody Reservation updatedDetails, Authentication auth) {
         User currentUser = userRepository.findByEmail(auth.getName())
                 .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
         boolean isManagerOrAdmin = hasManagerAuthority(auth);
@@ -70,6 +72,11 @@ public class ReservationController {
     @DeleteMapping("/{id}")
     public void cancelReservation(@PathVariable Long id, Authentication auth) {
         reservationService.cancelReservation(id, auth.getName(), hasManagerAuthority(auth));
+    }
+
+    @GetMapping("/mine")
+    public List<Reservation> getMyReservations(Authentication auth) {
+        return reservationService.getReservationsByRequesterEmail(auth.getName());
     }
 
     private boolean hasManagerAuthority(Authentication auth) {
