@@ -38,3 +38,20 @@ jobs:
         env:
           DB_PASSWORD: testpassword
         run: ./mvnw test
+
+      - name: Build Docker image
+        run: docker build -t fleet-service-backend .
+
+      - name: Configure AWS credentials
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Push to ECR
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 483833153594.dkr.ecr.us-east-2.amazonaws.com
+          docker tag fleet-service-backend:latest 483833153594.dkr.ecr.us-east-2.amazonaws.com/fleet-service-backend:latest
